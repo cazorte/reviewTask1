@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.Assertion;
@@ -25,14 +26,12 @@ public class CartTest1 {
         WebElement firstProduct = driver.findElement(By.xpath("(//img[@class = 's-image'])[1]"));
         firstProduct.click();
 
-        //WebElement quantitySelection = driver.findElement(By.id("a-autoid-9-announce"));
-        //WebElement quantitySelection = driver.findElement(By.xpath("//span[@id='a-autoid-9']"));
 
-        WebElement quantitySelection = driver.findElement(By.xpath("//div[@id=\"selectQuantity\"]"));
-        quantitySelection.click();
-        quantitySelection.click();
+        //dropdown menu
 
-        //WebElement selection2 = driver.findElement(By.xpath("//span[@id='a-autoid-9']"));
+        WebElement dropdown = driver.findElement(By.xpath("(//select[@id='quantity'])"));
+        Select select = new Select(dropdown);
+        select.selectByValue("2");
 
 
         WebElement selection2 = driver.findElement(By.xpath("//li[@aria-labelledby = 'quantity_1']"));
