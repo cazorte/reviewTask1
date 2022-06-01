@@ -1,12 +1,12 @@
 package com.cydeo.tasks.reviewTasks1;
 
-import net.bytebuddy.jar.asm.Handle;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -20,9 +20,7 @@ public class Task3 {
     public static void beforeM(){
         // driver = null;
          driver= Driver.getDriver();
-
     }
-
 
     @Test
     public void test1(){
@@ -112,14 +110,50 @@ public class Task3 {
         //account type test
         AccountSummaryFeature();
 
-
         //last test table must have account credit card balance columns
+        String text1 = driver.findElement(By.xpath("//tr//th[.='Credit Card']")).getText();
+        String text2 = driver.findElement(By.xpath("//tr//th[.='Credit Card']/following-sibling::th[1]")).getText();
+        String text3 = driver.findElement(By.xpath("//tr//th[.='Credit Card']/preceding-sibling::th[1]")).getText();
 
+        String expText1="Credit Card";
+        String expText2="Balance";
+        String expText3="Account";
 
-
-
+        Assert.assertEquals(text1,expText1);
+        Assert.assertEquals(text2,expText2);
+        Assert.assertEquals(text3,expText3);
 
     }
+
+    @Test
+    public void test4(){
+
+        driver.findElement(By.xpath("//a[.='Account Activity']")).click();
+
+        Assert.assertEquals(driver.getTitle(),"Zero - Account Activity");
+        System.out.println("Title test passed!");
+
+        //dropdown test
+        Select dropdownMenu = new Select(driver.findElement(By.xpath("//select[@id='aa_accountId']")));
+
+        Assert.assertEquals( dropdownMenu.getFirstSelectedOption().getText() , "Savings" );
+        String[] expectedOptions = {"Savings","Checking","Savings","Loan","Credit Card","Brokerage"};
+        int a=0;
+        for (WebElement eachOption : dropdownMenu.getOptions()) {
+            System.out.println("eachOption = " + eachOption.getText());
+            // Assert.assertEquals(eachOption, expectedOptions[a++]);
+        }
+
+        //column names test
+        Assert.assertEquals(driver.findElement(By.xpath("//th")).getText(), "Date");
+        Assert.assertEquals(driver.findElement(By.xpath("//th/following-sibling::th[1]")).getText(), "Description");
+        Assert.assertEquals(driver.findElement(By.xpath("//th/following-sibling::th[2]")).getText(), "Deposit");
+        Assert.assertEquals(driver.findElement(By.xpath("//th/following-sibling::th[3]")).getText(), "Withdrawal");
+
+        driver.quit();
+    }
+
+
     public static void AccountSummaryFeature(){
 
         String actualTitle;
@@ -163,7 +197,6 @@ public class Task3 {
     @AfterMethod
     public  void tearDrop(){
         staticWait(2);
-        //driver.close();
     }
 
 
